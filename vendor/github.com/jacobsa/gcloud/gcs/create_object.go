@@ -72,6 +72,13 @@ func (b *bucket) startResumableUpload(
 	query := make(url.Values)
 	query.Set("projection", "full")
 	query.Set("uploadType", "resumable")
+	
+        //-----------------------------------------------------------------------
+        // Hacked to mark all uploaded files as publicly readable, since they are
+        // intended to be accessed behind an SSL load balacner, treating the
+        // the bucket as a 'backend bucket'.
+        //-----------------------------------------------------------------------
+        query.Set("predefinedAcl", "publicRead");
 
 	if req.GenerationPrecondition != nil {
 		query.Set("ifGenerationMatch", fmt.Sprint(*req.GenerationPrecondition))
