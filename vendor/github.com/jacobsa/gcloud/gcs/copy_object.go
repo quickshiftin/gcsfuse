@@ -50,6 +50,13 @@ func (b *bucket) CopyObject(
 
 	query := make(url.Values)
 	query.Set("projection", "full")
+	
+        //-----------------------------------------------------------------------
+        // Hacked to mark all uploaded files as publicly readable, since they are
+        // intended to be accessed behind an SSL load balacner, treating the
+        // the bucket as a 'backend bucket'.
+        //-----------------------------------------------------------------------
+        query.Set("destinationPredefinedAcl", "publicRead");
 
 	if req.SrcGeneration != 0 {
 		query.Set("sourceGeneration", fmt.Sprintf("%d", req.SrcGeneration))
